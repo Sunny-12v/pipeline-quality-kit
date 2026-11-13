@@ -1,0 +1,11 @@
+sources:
+  orders: orders.csv
+  customers: customers.csv
+
+checks:
+  - {check: not_null,        table: orders, column: customer_id}
+  - {check: unique,          table: orders, column: order_id}
+  - {check: accepted_values, table: orders, column: status, values: [paid, shipped, refunded]}
+  - {check: range,           table: orders, column: amount, min: 0, max: 10000}
+  - {check: foreign_key,     table: orders, column: customer_id, ref_table: customers, ref_column: customer_id}
+  - {check: freshness,       table: orders, column: created_at, max_age_hours: 24}
